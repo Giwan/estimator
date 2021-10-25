@@ -1,7 +1,5 @@
-import netlify from '@sveltejs/adapter-netlify';
-
 /** @type {import('@sveltejs/kit').Config} */
-// import vercel from '@sveltejs/adapter-vercel';
+import netlify from '@sveltejs/adapter-netlify';
 
 const config = {
 	kit: {
