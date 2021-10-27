@@ -1,16 +1,42 @@
 <script>
-	import { getExplanation } from '../utils/helpers';
+	import { spring } from "svelte/motion";
+	import { getExplanation, modulo } from '../utils/helpers';
 	export let progressBarValue = 0;
+
+	const displayedExplanation = spring();
+	$: displayedExplanation.set(progressBarValue);
+	$: offset = modulo($displayedExplanation, 1); 
+
 </script>
 
-<article>
-	<p>{getExplanation(progressBarValue)}</p>
-</article>
+<div class="wrapper">
+	<article>
+		<div class="explanation-digits" style="transform: translate(0, {100 * offset }%)">
+			<div aria-hidden="true">{getExplanation($displayedExplanation + 1)}</div>
+			<div>{getExplanation($displayedExplanation)}</div>
+		</div>
+	</article>
+</div>
 
 <style>
+
+	.wrapper {
+		min-height: 150px;
+		grid-column: span 2;
+	}
 	article {
-        grid-column: span 2;
-		margin-bottom: calc(var(--unit) * 2);
-        min-height: 150px;
+		margin: calc(var(--unit) * 2) 0;
+		position: relative;
+		overflow: hidden;
+	}
+
+	div[aria-hidden="true"] {
+		top: -150%;
+		position: absolute;
+	}
+
+	.explanation-digits {
+		height: 100%;
+		width: 100%;
 	}
 </style>

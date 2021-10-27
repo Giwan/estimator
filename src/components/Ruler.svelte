@@ -1,4 +1,5 @@
 <script>
+    import { fade } from 'svelte/transition';
     export let blocks = [];
 
     function getClassName(i) {
@@ -10,7 +11,7 @@
 </script>
 <div>
     {#each blocks as undefined, i }
-        <span class={getClassName(i)}></span>
+        <span class={getClassName(i)} transition:fade></span>
     {/each}
 </div>
 
@@ -18,6 +19,7 @@
     div {
         margin-top: calc(var(--unit) * 2);
         width: 100%;
+        min-height: 1ch;
         grid-column: span 2;
         display: grid;
         grid-template-columns: repeat(20, 1fr);

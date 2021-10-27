@@ -17,5 +17,12 @@ const explanations =  [
 ]
 
 export function getExplanation(index) {
-    return explanations[index];  
+    return explanations[parseInt(index)];  
+}
+
+// This was copied from the example.
+// I'm not entirely sure what this computes. 
+export function modulo(n, m) {
+    // handle negative numbers
+    return ((n % m) + m) % m;
 }

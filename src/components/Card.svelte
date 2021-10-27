@@ -8,7 +8,7 @@
 	$: progressBarValue = 0;
 	const handleChange = function (e) {
 		estimation = getFibonacci(e.currentTarget.value, estimation);
-		progressBarValue = e.currentTarget.value;
+		progressBarValue = parseInt(e.currentTarget.value); // incremental value
 	};
 
 	$: blocks = Array(estimation);
@@ -34,7 +34,6 @@
 		border-radius: calc(var(--unit) / 2);
 		display: grid;
 		grid-template-columns: 2fr 1fr;
-		grid-template-rows: 1fr 3fr;
 		min-width: 300px;
 		padding: var(--unit);
 	}
@@ -50,7 +49,6 @@
 
 	.value {
 		display: flex;
-		height: 100%;
 		width: 100%;
 
 		place-items: center;
@@ -60,6 +58,7 @@
 
 	.valueInnerWrapper {
 		width: calc(var(--unit) * 5);
+		min-height: 4ch;
 		display: flex;
 		justify-content: center;
 		align-items: center;
