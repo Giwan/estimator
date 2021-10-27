@@ -2,7 +2,6 @@
     import { spring, tweened } from "svelte/motion";
     import { fade } from "svelte/transition";
     import { getExplanation } from "../utils/helpers";
-    import Test from "./Test.svelte";
 
     let count = 0;
     const displayedCount = tweened();
