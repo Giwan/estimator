@@ -14,8 +14,8 @@
 <div class="wrapper">
 	<article>
 		<div class="explanation-digits" style="transform: translate(0, {100 * offset }%)">
-			<div aria-hidden="true">{getExplanation($displayedExplanation + 1)}</div>
-			<div>{getExplanation($displayedExplanation)}</div>
+			<p aria-hidden="true">{getExplanation($displayedExplanation + 1)}</p>
+			<p>{getExplanation($displayedExplanation)}</p>
 		</div>
 	</article>
 </div>
@@ -23,8 +23,10 @@
 <style>
 
 	.wrapper {
-		min-height: 150px;
+		height: 160px;
+		overflow: hidden;
 		grid-column: span 2;
+		/* background-color: red; */
 	}
 	article {
 		margin: calc(var(--unit) * 2) 0;
@@ -32,13 +34,22 @@
 		overflow: hidden;
 	}
 
-	div[aria-hidden="true"] {
-		top: -150%;
+
+	p {
+		display: inline-block;
+		font-size: 1.25em;
+		overflow: hidden;
+		/* background-color: silver; */
+	}
+	p[aria-hidden="true"] {
+		top: -200%;
 		position: absolute;
+		opacity: 0.1;
 	}
 
 	.explanation-digits {
 		height: 100%;
 		width: 100%;
+		overflow: hidden;
 	}
 </style>
