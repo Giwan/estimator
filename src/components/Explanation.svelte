@@ -1,11 +1,13 @@
 <script>
 	import { spring } from "svelte/motion";
-	import { getExplanation, modulo } from '../utils/helpers';
+	import { getItemExplanation, modulo, TITLES } from '../utils/helpers';
 	export let progressBarValue = 0;
+	export let title = TITLES.complexity;
 
 	const displayedExplanation = spring();
 	$: displayedExplanation.set(progressBarValue);
-	$: offset = modulo($displayedExplanation, 1); 
+	$: offset = modulo($displayedExplanation, 1);
+	const getExplanation = getItemExplanation(title);
 
 </script>
 

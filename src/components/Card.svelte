@@ -2,7 +2,9 @@
 	import Ruler from './Ruler.svelte';
 	import Slider from './Slider.svelte';
 	import Explanation from './Explanation.svelte';
-	import { getFibonacci } from '../utils/helpers';
+	import { getFibonacci, TITLES } from '../utils/helpers';
+
+	export let title;
 
 	let estimation = 0;
 	$: progressBarValue = 0;
@@ -16,13 +18,13 @@
 
 <article class="card">
 	<header>
-		<h1>Complexity</h1>
+		<h1>{title}</h1>
 	</header>
 	<div class="value">
 		<output class="valueInnerWrapper">{estimation}</output>
 	</div>
 	<Ruler {blocks} />
-	<Explanation {progressBarValue} />
+	<Explanation {progressBarValue} {title} />
 	<Slider {handleChange} {progressBarValue} />
 </article>
 
@@ -45,6 +47,7 @@
 
 	h1 {
 		margin: 0;
+		text-transform: capitalize;
 	}
 
 	.value {
