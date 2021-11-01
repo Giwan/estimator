@@ -1,7 +1,7 @@
 <script>
     import { spring, tweened } from "svelte/motion";
     import { fade } from "svelte/transition";
-    import { getExplanation } from "../utils/helpers";
+    import { getExplanation } from "../../utils/helpers";
 
     let count = 0;
     const displayedCount = tweened();
