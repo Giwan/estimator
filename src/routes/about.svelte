@@ -1,6 +1,7 @@
 <script>
     import FlipDemo from "../components/about/FlipDemo.svelte";
     import Counter from "../components/about/Counter.svelte";
+    import SliderDemo from "../components/about/SliderDemo.svelte";
     // import ExplanationSample from "../components/ExplanationSample.svelte";
 </script>
 
@@ -8,3 +9,4 @@
 <!-- <Counter /> -->
 <!-- <ExplanationSample /> -->
 <!-- <FlipDemo /> -->
+<SliderDemo />
