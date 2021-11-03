@@ -11,7 +11,7 @@ export function getFibonacci(index) {
 }
 
 
-const complexity =  [
+export const complexity =  [
     "Move the slider right to increase the estimate.",
     "The work is very easy to perform/understand. It can't get simpler than this.",
     "The work I'm doing is fairly easy to perform/understand. It's straight forward.",
@@ -44,7 +44,7 @@ const uncertainty = [
     "I have no idea what I'm doing. The whole work has to be uncovered. Can we have a spike story first to uncover some of that work?"
 ];
 
-const explanations = {complexity, risks, uncertainty};
+export const explanations = {complexity, risks, uncertainty};
 
 export function getExplanation(index, factors) {
     if (!Array.isArray(factors)) {

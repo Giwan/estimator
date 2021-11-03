@@ -1,5 +1,5 @@
 <script>
-    import Card from "../components/Card.svelte"; 
+    import Card from "../components/Card2.svelte"; 
     import { TITLES } from "../utils/helpers";
 </script>
 
@@ -7,8 +7,6 @@
 <a href="/about">About</a>
 <main>
     <Card title={TITLES.complexity} />
-    <Card title={TITLES.risks} />
-    <Card title={TITLES.uncertainty} />
 </main>
 
 <style>
@@ -17,9 +15,9 @@
     }
 
     main {
-        display: grid;
+        /* display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: var(--unit);
-        margin: var(--unit);
+        margin: var(--unit); */
     }
 </style>

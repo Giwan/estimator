@@ -10,5 +10,5 @@ import TweenedEstimation from "../components/about/TweenedEstimation.svelte";
 <!-- <Counter /> -->
 <!-- <ExplanationSample /> -->
 <!-- <FlipDemo /> -->
-<!-- <SliderDemo /> -->
-<TweenedEstimation />
+<SliderDemo />
+<!-- <TweenedEstimation /> -->
