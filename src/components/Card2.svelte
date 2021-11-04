@@ -1,5 +1,5 @@
 <script>
-	import { fibRange, explanations, complexity } from '../utils/helpers.js';
+	import { fibRange, complexity, explanations } from '../utils/helpers.js';
 	import { tweened } from 'svelte/motion';
     import { fade } from "svelte/transition"; 
 
@@ -10,16 +10,22 @@
 	});
 
 	const handleChange = function (e) {
-        value = e.currentTarget.value;
+        value = parseInt(e.currentTarget.value);
 		$tweenedEstimation = fibRange[value];
 	};
+
+    $: texts = explanations[title];
 </script>
 
 <main>
     <h1>{title}</h1>
     <out class="estimation">{Number.parseFloat($tweenedEstimation).toPrecision(3)}</out>
-    <div class="explanation" transition:fade>
-        {complexity[value]}
+    <div class="explanationContainer">
+        {#each texts as item, i}
+            {#if i === value}
+                <div class="explanation" transition:fade>{item}</div>
+            {/if}
+        {/each}
     </div>
     <div class="rangeContainer">
         <input type="range" min="0" max="7" bind:value={value} on:input={handleChange} />
@@ -31,13 +37,19 @@
     main {
         display: grid; 
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 2fr 2fr;
         width: 100%;
+        height: 200px;
+        padding-bottom: calc(var(--unit) * 2);
+        margin-bottom: calc(var(--unit) * 2);
     }
 	
 	h1 {
 		text-transform: capitalize;
-        margin-left: var(--unit);
+        margin: 0;
+        /* background-color: red; */
+        display: flex;
+        place-items: center;
 	}
 
 	.estimation {
@@ -48,12 +60,18 @@
         box-sizing: border-box;
 	}
 
-    .explanation {
+    .explanationContainer {
         grid-column: 1 / -1;
-        font-size: 1.2em;
-        text-align: center;
+        height: 100px;
+        overflow: hidden;
         max-width: 600px;
-        margin: 0 auto;
+        margin: var(--unit) auto;
+    }
+
+    .explanation {
+        height: 100%;
+        font-size: 1.2em;
+        font-style: italic;
     }
 
     .rangeContainer {
