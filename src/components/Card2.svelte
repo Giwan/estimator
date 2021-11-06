@@ -17,7 +17,7 @@
     $: texts = explanations[title];
 </script>
 
-<main>
+<article>
     <h1>{title}</h1>
     <out class="estimation">{Number.parseFloat($tweenedEstimation).toPrecision(3)}</out>
     <div class="explanationContainer">
@@ -30,18 +30,18 @@
     <div class="rangeContainer">
         <input type="range" min="0" max="7" bind:value={value} on:input={handleChange} />
     </div>
-</main>
+</article>
 
 <style>
 
-    main {
+    article {
         display: grid; 
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 2fr 2fr;
-        width: 100%;
         height: 200px;
         padding-bottom: calc(var(--unit) * 2);
         margin-bottom: calc(var(--unit) * 2);
+        margin: var(--unit);
     }
 	
 	h1 {
@@ -50,6 +50,11 @@
         /* background-color: red; */
         display: flex;
         place-items: center;
+        /* justify-content: flex-start; */
+        color: var(--color-white-dim);
+        text-transform: uppercase;
+        /* border: 1px solid var(--color-divider); */
+        font-size: var(--font-size);
 	}
 
 	.estimation {
@@ -66,12 +71,14 @@
         overflow: hidden;
         max-width: 600px;
         margin: var(--unit) auto;
+        width: 100%;
     }
 
     .explanation {
         height: 100%;
         font-size: 1.2em;
         font-style: italic;
+        color: var(--color-white-dim);
     }
 
     .rangeContainer {

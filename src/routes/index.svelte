@@ -3,8 +3,6 @@
     import { TITLES } from "../utils/helpers";
 </script>
 
-<h1>Fibonacci Estimator</h1>
-<a href="/about">About</a>
 <main>
     <Card title={TITLES.complexity} />
     <Card title={TITLES.risks} />
@@ -12,9 +10,6 @@
 </main>
 
 <style>
-    h1 {
-        color: slategray;
-    }
 
     main {
         margin: 0 auto calc(var(--unit) * 10);
