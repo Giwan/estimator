@@ -1,11 +1,13 @@
 <script>
     import Header from "../components/Header.svelte";
+    import Footer from "../components/Footer.svelte";
 </script>
 
 <div class="container">
     <Header />
     <main>
         <slot></slot>
+        <Footer />
     </main>
 </div>
 
@@ -23,6 +25,7 @@
         --font-size-large: 24px;
 
         --header-height: 80px;
+        --footer-height: 100px; 
 
     }
 
@@ -40,12 +43,14 @@
     .container {
         height: 100vh;
         width: 100vw;
+        overflow: hidden;
     }
 
     main {
         margin-top: calc(var(--header-height) + (var(--unit) * 2));
-        /* height: calc(100% - var(--header-height)); */
+        height: calc(100vh - var(--header-height));
         overflow-y: scroll;
+        box-sizing: border-box;
         /* background-color: green; */
     }
 </style>

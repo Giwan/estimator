@@ -1,6 +1,5 @@
 <header>
-    <h1>Fibonacci Estimator</h1>
-    <a href="/about">About</a>
+    <a href="/" alt="home"><h1>Fibonacci Estimator</h1></a>
 </header>
 
 <style>
@@ -24,5 +23,8 @@
         width: 165px;
         overflow:hidden;
         font-size: var(--font-size-large);
+    }
+    a {
+        text-decoration: none;
     }
 </style>
