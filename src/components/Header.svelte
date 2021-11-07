@@ -1,5 +1,10 @@
+<script>
+    import TotalEstimation from "./TotalEstimation.svelte";
+</script>
+
 <header>
     <a href="/" alt="home"><h1>Fibonacci Estimator</h1></a>
+    <TotalEstimation />
 </header>
 
 <style>

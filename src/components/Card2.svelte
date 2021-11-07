@@ -2,16 +2,18 @@
 	import { fibRange, complexity, explanations } from '../utils/helpers.js';
 	import { tweened } from 'svelte/motion';
     import { fade } from "svelte/transition"; 
+    import { updateEstimation } from "../stores/store.js";
 
 	export let title = 'Please enter a title';
     let value = 0; 
-	let tweenedEstimation = tweened(value, {
+	const tweenedEstimation = tweened(value, {
 		duration: 250
 	});
 
 	const handleChange = function (e) {
         value = parseInt(e.currentTarget.value);
 		$tweenedEstimation = fibRange[value];
+        updateEstimation(title, fibRange[value]);
 	};
 
     $: texts = explanations[title];
