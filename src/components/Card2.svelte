@@ -1,5 +1,5 @@
 <script>
-	import { fibRange, complexity, explanations } from '../utils/helpers.js';
+	import { fibRange, explanations } from '../utils/helpers.js';
 	import { tweened } from 'svelte/motion';
 	import { fade } from 'svelte/transition';
 	import { updateEstimation } from '../stores/store.js';
@@ -51,7 +51,7 @@
 		grid-template-rows: 1fr 2fr 2fr;
 		height: 200px;
 		padding-bottom: calc(var(--unit) * 2);
-		margin: var(--unit);
+		margin: var(--unit) 0;
 	}
 
 	h1 {

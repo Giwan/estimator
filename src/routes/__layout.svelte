@@ -20,12 +20,14 @@
         --color-background-1: #dedede;
         --color-background-2: #fefefe;
         --color-divider: #cccccc;
+        --color-dark: #212121;
         
         --font-size: 18px;
         --font-size-large: 24px;
 
-        --header-height: 80px;
+        --header-height: 100px;
         --footer-height: 100px; 
+        --max-width: 600px;
 
     }
 
@@ -51,6 +53,7 @@
         height: calc(100vh - var(--header-height));
         overflow-y: scroll;
         box-sizing: border-box;
+        padding: 0 var(--unit);
         /* background-color: green; */
     }
 </style>

@@ -3,23 +3,31 @@
 </script>
 
 <header>
-    <a href="/" alt="home"><h1>Fibonacci Estimator</h1></a>
-    <TotalEstimation />
+    <div class="headerContainer">
+        <a href="/" alt="home"><h1>Fibonacci Estimator</h1></a>
+        <TotalEstimation />
+    </div>
 </header>
 
 <style>
     header {
-        display: flex;
-        place-items: center;
-        justify-content: space-between;
+        
         height: var(--header-height);
         width: 100vw;
         background-color: var(--color-background-2);
-        border-bottom: 1px solid var(--color-divider);
         position: fixed;
         top: 0;
         padding: var(--unit);
         box-sizing: border-box;
+    }
+
+    .headerContainer {
+        max-width: 600px;
+        margin: 0 auto;
+        display: flex;
+        place-items: center;
+        justify-content: space-between;
+        /* border-bottom: 1px solid var(--color-divider); */
     }
 
     h1 {
