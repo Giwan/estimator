@@ -22,7 +22,7 @@
     .container {
         display: grid;
         gap: calc(var(--unit) /2);
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 2fr;
         grid-template-rows: 1fr 1fr;
         width: 100%;
         max-width: 200px;
@@ -36,6 +36,8 @@
         grid-column: span 2;
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        /* background-color: green; */
     }
 
     .recommended .value {
@@ -47,11 +49,19 @@
         display: flex;
         place-items: center;
         justify-content: space-between;
+        align-items: center;
     }
 
     .label {
         text-transform: uppercase;
         opacity: 0.5;
+        margin-right: calc(var(--unit) /2);
+    }
+
+    @media (max-width: 375px) {
+        .label {
+            font-size: 0.8em;
+        }
     }
 
 

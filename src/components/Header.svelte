@@ -39,5 +39,12 @@
     }
     a {
         text-decoration: none;
+        overflow: hidden;
+    }
+
+    @media (max-width: 375px) {
+        h1 {
+            font-size: var(--font-size);
+        }
     }
 </style>

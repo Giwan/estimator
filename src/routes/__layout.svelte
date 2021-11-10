@@ -7,7 +7,7 @@
     <Header />
     <main>
         <slot></slot>
-        <Footer />
+        <!-- <Footer /> -->
     </main>
 </div>
 
@@ -31,7 +31,7 @@
 
     }
 
-    :globa() {
+    :global() {
         box-sizing: border-box;
     }
 
