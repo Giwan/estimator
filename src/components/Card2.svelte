@@ -3,7 +3,7 @@
 	import { tweened } from 'svelte/motion';
 	import { fade } from 'svelte/transition';
 	import { updateEstimation } from '../stores/store.js';
-	import RangeContainer from "./RangeContainer.svelte";
+	import RangeContainer from './RangeContainer.svelte';
 
 	export let title = 'Please enter a title';
 	let value = 0;
@@ -19,20 +19,20 @@
 
 	const calculateColor = (value) => {
 		const _value = fibRange[value];
-		if (_value === 20 ) return "#E97474";
-		if (_value >= 13 ) return "#E97474";
-		if (_value >= 5 ) return "#DFB583";
-		if (_value >= 3 ) return "#34CFD9";
-		if (_value > -1 ) return "#69C349";
-	}
+		if (_value === 20) return '#E97474';
+		if (_value >= 13) return '#E97474';
+		if (_value >= 5) return '#DFB583';
+		if (_value >= 3) return '#34CFD9';
+		if (_value > -1) return '#69C349';
+	};
 
 	$: texts = explanations[title];
-
 </script>
 
 <article>
 	<h1>{title}</h1>
 	<out class="estimation">{Number.parseFloat($tweenedEstimation).toPrecision(3)}</out>
+	<RangeContainer {value} on:input={handleChange} --range-thumb-color={calculateColor(value)} />
 	<div class="explanationContainer">
 		{#each texts as item, i}
 			{#if i === value}
@@ -40,15 +40,13 @@
 			{/if}
 		{/each}
 	</div>
-	<RangeContainer {value} on:input={handleChange} --range-thumb-color={calculateColor(value)} />
 </article>
 
 <style>
-    
 	article {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		grid-template-rows: 1fr 2fr 2fr;
+		grid-template-rows: 1fr 2fr 1fr;
 		height: 200px;
 		padding-bottom: calc(var(--unit) * 2);
 		margin: var(--unit) 0;
@@ -61,10 +59,11 @@
 		display: flex;
 		place-items: center;
 		/* justify-content: flex-start; */
-		color: var(--color-white-dim);
+		/* color: var(--color-white-dim); */
 		text-transform: uppercase;
 		/* border: 1px solid var(--color-divider); */
 		font-size: var(--font-size);
+		color: var(--color-dark);
 	}
 
 	.estimation {
@@ -73,6 +72,7 @@
 		text-align: right;
 		padding-right: var(--unit);
 		box-sizing: border-box;
+		color: var(--color-dark);
 	}
 
 	.explanationContainer {
@@ -84,11 +84,10 @@
 	}
 
 	.explanation {
-		height: 100%;
-		font-size: 1em;
-		font-style: italic;
-		color: var(--color-white-dim);
+		/* height: 100%; */
+		font-size: 0.8em;
+		/* font-style: italic; */
+		color: var(--color-dark);
+		/* border: 1px solid red; */
 	}
-
-	
 </style>

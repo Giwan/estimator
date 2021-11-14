@@ -26,8 +26,8 @@
         grid-template-rows: 1fr 1fr;
         width: 100%;
         max-width: 200px;
-        background-color: var(--color-dark);
-        color: var(--color-white);
+        background-color: var(--color-white);
+        color: var(--color-dark);
         padding: var(--unit);
         border-radius: var(--unit);
     }

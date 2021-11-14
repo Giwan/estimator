@@ -10,7 +10,8 @@
 :root {
 		--range-thumb-color: green;
         --range-thumb-height: 40px;
-		--range-track-color: #212121;
+		--range-thumb-border: #5d6986;
+		--range-track-color: #5d6986; /* #212121; */
 		--range-track-radius: var(--unit);
     }
 
@@ -44,13 +45,13 @@
 		width: 20px;
 		height: var(--range-thumb-height);
 		background-color: var(--range-thumb-color, red);
-		border: 1.8px solid #fefefe;
+		border: 1.8px solid var(--range-thumb-border);
 		border-radius: var(--range-track-radius);
 		cursor: pointer;
 		-webkit-appearance: none;
 	}
 	input[type='range']:focus::-webkit-slider-runnable-track {
-		background: #2e2e2e;
+		background: var(--range-track-color);
 	}
 	input[type='range']::-moz-range-track {
 		background: var(--range-track-color);
@@ -64,7 +65,7 @@
 		width: 20px;
 		height: var(--range-thumb-height);
 		background-color: var(--range-thumb-color, red);
-		border: 1.8px solid #fefefe;
+		border: 1.8px solid var(--range-thumb-border);
 		border-radius: 15px;
 		cursor: pointer;
 	}
@@ -78,7 +79,7 @@
 		cursor: pointer;
 	}
 	input[type='range']::-ms-fill-lower {
-		background: #141414;
+		background: var(--range-track-color);
 		border: 0.2px solid var(--range-track-color);
 		border-radius: 2.6px;
 	}
@@ -91,7 +92,7 @@
 		width: 20px;
         height: var(--range-thumb-height);
 		background: var(--range-thumb-color, red);
-		border: 1.8px solid #fefefe;
+		border: 1.8px solid var(--range-thumb-border);
 		border-radius: 15px;
 		cursor: pointer;
 		margin-top: 0px;
@@ -101,7 +102,7 @@
 		background: var(--range-thumb-color, red);
 	}
 	input[type='range']:focus::-ms-fill-upper {
-		background: #2e2e2e;
+		background: var(--range-track-color);
 	}
 	/*TODO: Use one of the selectors from https://stackoverflow.com/a/20541859/7077589 and figure out
 how to remove the virtical space around the range input in IE*/

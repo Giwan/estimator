@@ -18,9 +18,11 @@
         --color-white-dim: #555;
         --color-black-dim: rgba(33, 33, 33, 0.5);
         --color-background-1: #dedede;
-        --color-background-2: #fefefe;
+        /* --color-background-2: #fefefe; */
+        --color-background-2: #b7bdc8;
         --color-divider: #cccccc;
-        --color-dark: #212121;
+        /* --color-dark: #212121; */
+        --color-dark: #5d6986;
         
         --font-size: 18px;
         --font-size-large: 24px;
