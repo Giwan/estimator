@@ -4974,30 +4974,30 @@ function stringifyString(str) {
   result += '"';
   return result;
 }
-function noop() {
+function noop$1() {
 }
-function safe_not_equal(a, b) {
+function safe_not_equal$1(a, b) {
   return a != a ? b == b : a !== b || (a && typeof a === "object" || typeof a === "function");
 }
 Promise.resolve();
-var subscriber_queue = [];
-function writable(value, start = noop) {
+var subscriber_queue$1 = [];
+function writable$1(value, start = noop$1) {
   let stop;
   const subscribers = new Set();
   function set(new_value) {
-    if (safe_not_equal(value, new_value)) {
+    if (safe_not_equal$1(value, new_value)) {
       value = new_value;
       if (stop) {
-        const run_queue = !subscriber_queue.length;
+        const run_queue = !subscriber_queue$1.length;
         for (const subscriber of subscribers) {
           subscriber[1]();
-          subscriber_queue.push(subscriber, value);
+          subscriber_queue$1.push(subscriber, value);
         }
         if (run_queue) {
-          for (let i = 0; i < subscriber_queue.length; i += 2) {
-            subscriber_queue[i][0](subscriber_queue[i + 1]);
+          for (let i = 0; i < subscriber_queue$1.length; i += 2) {
+            subscriber_queue$1[i][0](subscriber_queue$1[i + 1]);
           }
-          subscriber_queue.length = 0;
+          subscriber_queue$1.length = 0;
         }
       }
     }
@@ -5005,11 +5005,11 @@ function writable(value, start = noop) {
   function update(fn) {
     set(fn(value));
   }
-  function subscribe(run2, invalidate = noop) {
+  function subscribe2(run2, invalidate = noop$1) {
     const subscriber = [run2, invalidate];
     subscribers.add(subscriber);
     if (subscribers.size === 1) {
-      stop = start(set) || noop;
+      stop = start(set) || noop$1;
     }
     run2(value);
     return () => {
@@ -5020,7 +5020,7 @@ function writable(value, start = noop) {
       }
     };
   }
-  return { set, update, subscribe };
+  return { set, update, subscribe: subscribe2 };
 }
 function hash(value) {
   let hash2 = 5381;
@@ -5114,11 +5114,11 @@ async function render_response({
         is_private = true;
       maxage = loaded.maxage;
     });
-    const session = writable($session);
+    const session = writable$1($session);
     const props = {
       stores: {
-        page: writable(null),
-        navigating: writable(null),
+        page: writable$1(null),
+        navigating: writable$1(null),
         session
       },
       page,
@@ -5952,6 +5952,14 @@ async function respond(incoming, options2, state = {}) {
     };
   }
 }
+function noop() {
+}
+var identity = (x) => x;
+function assign(tar, src2) {
+  for (const k in src2)
+    tar[k] = src2[k];
+  return tar;
+}
 function run(fn) {
   return fn();
 }
@@ -5960,6 +5968,43 @@ function blank_object() {
 }
 function run_all(fns) {
   fns.forEach(run);
+}
+function safe_not_equal(a, b) {
+  return a != a ? b == b : a !== b || (a && typeof a === "object" || typeof a === "function");
+}
+function subscribe(store, ...callbacks) {
+  if (store == null) {
+    return noop;
+  }
+  const unsub = store.subscribe(...callbacks);
+  return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+}
+var is_client = typeof window !== "undefined";
+var now = is_client ? () => window.performance.now() : () => Date.now();
+var raf = is_client ? (cb) => requestAnimationFrame(cb) : noop;
+var tasks = new Set();
+function run_tasks(now2) {
+  tasks.forEach((task) => {
+    if (!task.c(now2)) {
+      tasks.delete(task);
+      task.f();
+    }
+  });
+  if (tasks.size !== 0)
+    raf(run_tasks);
+}
+function loop(callback) {
+  let task;
+  if (tasks.size === 0)
+    raf(run_tasks);
+  return {
+    promise: new Promise((fulfill) => {
+      tasks.add(task = { c: callback, f: fulfill });
+    }),
+    abort() {
+      tasks.delete(task);
+    }
+  };
 }
 var current_component;
 function set_current_component(component) {
@@ -5983,6 +6028,13 @@ var escaped = {
 };
 function escape(html) {
   return String(html).replace(/["'&<>]/g, (match) => escaped[match]);
+}
+function each(items, fn) {
+  let str = "";
+  for (let i = 0; i < items.length; i += 1) {
+    str += fn(items[i], i);
+  }
+  return str;
 }
 var missing_component = {
   $$render: () => ""
@@ -6030,9 +6082,14 @@ function create_ssr_component(fn) {
     $$render
   };
 }
+function add_attribute(name, value, boolean) {
+  if (value == null || boolean && !value)
+    return "";
+  return ` ${name}${value === true ? "" : `=${typeof value === "string" ? JSON.stringify(escape(value)) : `"${value}"`}`}`;
+}
 function afterUpdate() {
 }
-var css$1 = {
+var css$7 = {
   code: "#svelte-announcer.svelte-1j55zn5{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}",
   map: null
 };
@@ -6057,7 +6114,7 @@ var Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     $$bindings.props_1(props_1);
   if ($$props.props_2 === void 0 && $$bindings.props_2 && props_2 !== void 0)
     $$bindings.props_2(props_2);
-  $$result.css.add(css$1);
+  $$result.css.add(css$7);
   {
     stores.page.set(page);
   }
@@ -6095,9 +6152,9 @@ function init(settings = default_settings) {
     amp: false,
     dev: false,
     entry: {
-      file: assets + "/_app/start-d35146ba.js",
+      file: assets + "/_app/start-a11c5eb2.js",
       css: [assets + "/_app/assets/start-61d1577b.css"],
-      js: [assets + "/_app/start-d35146ba.js", assets + "/_app/chunks/vendor-af0f2ef7.js"]
+      js: [assets + "/_app/start-a11c5eb2.js", assets + "/_app/chunks/vendor-48d740da.js"]
     },
     fetched: void 0,
     floc: false,
@@ -6119,29 +6176,29 @@ function init(settings = default_settings) {
     service_worker: null,
     router: true,
     ssr: true,
-    target: "#svelte",
+    target: null,
     template,
     trailing_slash: "never"
   };
 }
 var empty = () => ({});
 var manifest = {
-  assets: [{ "file": "favicon.png", "size": 1571, "type": "image/png" }],
-  layout: ".svelte-kit/build/components/layout.svelte",
+  assets: [{ "file": "favicon.ico", "size": 318, "type": "image/vnd.microsoft.icon" }, { "file": "favicon.png", "size": 1571, "type": "image/png" }],
+  layout: "src/routes/__layout.svelte",
   error: ".svelte-kit/build/components/error.svelte",
   routes: [
     {
       type: "page",
       pattern: /^\/$/,
       params: empty,
-      a: [".svelte-kit/build/components/layout.svelte", "src/routes/index.svelte"],
+      a: ["src/routes/__layout.svelte", "src/routes/index.svelte"],
       b: [".svelte-kit/build/components/error.svelte"]
     },
     {
       type: "page",
       pattern: /^\/about\/?$/,
       params: empty,
-      a: [".svelte-kit/build/components/layout.svelte", "src/routes/about.svelte"],
+      a: ["src/routes/__layout.svelte", "src/routes/about.svelte"],
       b: [".svelte-kit/build/components/error.svelte"]
     }
   ]
@@ -6153,8 +6210,8 @@ var get_hooks = (hooks) => ({
   externalFetch: hooks.externalFetch || fetch
 });
 var module_lookup = {
-  ".svelte-kit/build/components/layout.svelte": () => Promise.resolve().then(function() {
-    return layout;
+  "src/routes/__layout.svelte": () => Promise.resolve().then(function() {
+    return __layout;
   }),
   ".svelte-kit/build/components/error.svelte": () => Promise.resolve().then(function() {
     return error;
@@ -6166,7 +6223,7 @@ var module_lookup = {
     return about;
   })
 };
-var metadata_lookup = { ".svelte-kit/build/components/layout.svelte": { "entry": "layout.svelte-c0349d46.js", "css": [], "js": ["layout.svelte-c0349d46.js", "chunks/vendor-af0f2ef7.js"], "styles": [] }, ".svelte-kit/build/components/error.svelte": { "entry": "error.svelte-d9465223.js", "css": [], "js": ["error.svelte-d9465223.js", "chunks/vendor-af0f2ef7.js"], "styles": [] }, "src/routes/index.svelte": { "entry": "pages/index.svelte-09e4fc83.js", "css": ["assets/pages/index.svelte-c5bac73c.css"], "js": ["pages/index.svelte-09e4fc83.js", "chunks/vendor-af0f2ef7.js"], "styles": [] }, "src/routes/about.svelte": { "entry": "pages/about.svelte-e26ab6af.js", "css": [], "js": ["pages/about.svelte-e26ab6af.js", "chunks/vendor-af0f2ef7.js"], "styles": [] } };
+var metadata_lookup = { "src/routes/__layout.svelte": { "entry": "pages/__layout.svelte-c9f18408.js", "css": ["assets/pages/__layout.svelte-a1b169ca.css"], "js": ["pages/__layout.svelte-c9f18408.js", "chunks/vendor-48d740da.js", "chunks/store-42e76381.js"], "styles": [] }, ".svelte-kit/build/components/error.svelte": { "entry": "error.svelte-8dccd08a.js", "css": [], "js": ["error.svelte-8dccd08a.js", "chunks/vendor-48d740da.js"], "styles": [] }, "src/routes/index.svelte": { "entry": "pages/index.svelte-33f9141a.js", "css": ["assets/pages/index.svelte-c062b4a6.css"], "js": ["pages/index.svelte-33f9141a.js", "chunks/vendor-48d740da.js", "chunks/store-42e76381.js"], "styles": [] }, "src/routes/about.svelte": { "entry": "pages/about.svelte-b5ef17d6.js", "css": ["assets/pages/about.svelte-63eaf217.css"], "js": ["pages/about.svelte-b5ef17d6.js", "chunks/vendor-48d740da.js"], "styles": [] } };
 async function load_component(file) {
   const { entry, css: css2, js, styles } = metadata_lookup[file];
   return {
@@ -6183,13 +6240,136 @@ function render(request, {
   const host = request.headers["host"];
   return respond({ ...request, host }, options, { prerender });
 }
-var Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${slots.default ? slots.default({}) : ``}`;
+var subscriber_queue = [];
+function writable(value, start = noop) {
+  let stop;
+  const subscribers = new Set();
+  function set(new_value) {
+    if (safe_not_equal(value, new_value)) {
+      value = new_value;
+      if (stop) {
+        const run_queue = !subscriber_queue.length;
+        for (const subscriber of subscribers) {
+          subscriber[1]();
+          subscriber_queue.push(subscriber, value);
+        }
+        if (run_queue) {
+          for (let i = 0; i < subscriber_queue.length; i += 2) {
+            subscriber_queue[i][0](subscriber_queue[i + 1]);
+          }
+          subscriber_queue.length = 0;
+        }
+      }
+    }
+  }
+  function update(fn) {
+    set(fn(value));
+  }
+  function subscribe2(run2, invalidate = noop) {
+    const subscriber = [run2, invalidate];
+    subscribers.add(subscriber);
+    if (subscribers.size === 1) {
+      stop = start(set) || noop;
+    }
+    run2(value);
+    return () => {
+      subscribers.delete(subscriber);
+      if (subscribers.size === 0) {
+        stop();
+        stop = null;
+      }
+    };
+  }
+  return { set, update, subscribe: subscribe2 };
+}
+var TITLES = {
+  complexity: "complexity",
+  risks: "risks",
+  uncertainty: "uncertainty"
+};
+var fibRange = [0, 1, 2, 3, 5, 8, 13, 20];
+var complexity = [
+  "Move the slider right to increase the estimate.",
+  "The work is very easy to perform/understand. It can't get simpler than this.",
+  "The work I'm doing is fairly easy to perform/understand. It's straight forward.",
+  "The work I'm doing takes some time to perform/understand, but I'm able to handle it.",
+  "The work takes some time to perform/understand. I might still be able to handle it after some initial assistance, guidance and/or research.",
+  "The work I'm doing takes a lot time to perform or understand. I'll might need some assistance/guidance/further research.",
+  "The work I'm doing takes a lot time to understand/perform. I'll definitely need some assistance/guidance/further research.",
+  "The work I'm doing is too complex for one sprint. Is it possible to split it up?"
+];
+var risks = [
+  "Move the slider right to increase the estimate.",
+  "Nothing can go wrong. It can't get safer than this.",
+  "It's unlikely that anything will go wrong.",
+  "Something might go wrong. No real consequences.",
+  "Something might go wrong, but the consequences are easily manageable.",
+  "If something goes wrong, the problems can get out of hand. The consequences can be difficult to work around.",
+  "If something goes wrong, the problems can get out of hand. The consequences will be very bad.",
+  "The work I'm doing is very sensitive to risk. What can we do to mitigate them?"
+];
+var uncertainty = [
+  "Move the slider right to increase the estimate.",
+  "I know exactly what to do. It can't get clearer than this.",
+  "I know what to do. It's very unlikely that I'll uncover unknown work.",
+  "I have a good idea of what to do. I might uncover some work.",
+  "I have an idea of what to do. It's very likely that we will be uncovering some new work.",
+  "I\u2019m a bit uncertain of what to do. We will be exploring new grounds and uncovering some unknown work.",
+  "I\u2019m very uncertain of what to do. There is a lot of work to be uncovered.",
+  "I have no idea what I'm doing. The whole work has to be uncovered. Can we have a spike story first to uncover some of that work?"
+];
+var explanations = { complexity, risks, uncertainty };
+var highestEstimation = writable(0);
+var averageEstimation = writable(0);
+var recommendedEstimation = writable(0);
+var css$6 = {
+  code: ".container.svelte-162e10g.svelte-162e10g{display:grid;gap:calc(var(--unit) /2);grid-template-columns:1fr 2fr;grid-template-rows:1fr 1fr;width:100%;max-width:200px;background-color:var(--color-white);color:var(--color-dark);padding:var(--unit);border-radius:var(--unit)}.recommended.svelte-162e10g.svelte-162e10g{grid-column:span 2;display:flex;justify-content:space-between;align-items:center}.recommended.svelte-162e10g .value.svelte-162e10g{color:red;font-size:1.2em}.stat.svelte-162e10g.svelte-162e10g{display:flex;place-items:center;justify-content:space-between;align-items:center}.label.svelte-162e10g.svelte-162e10g{text-transform:uppercase;opacity:0.5;margin-right:calc(var(--unit) /2)}@media(max-width: 375px){.label.svelte-162e10g.svelte-162e10g{font-size:0.8em}}",
+  map: null
+};
+var TotalEstimation = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $recommendedEstimation, $$unsubscribe_recommendedEstimation;
+  let $averageEstimation, $$unsubscribe_averageEstimation;
+  let $highestEstimation, $$unsubscribe_highestEstimation;
+  $$unsubscribe_recommendedEstimation = subscribe(recommendedEstimation, (value) => $recommendedEstimation = value);
+  $$unsubscribe_averageEstimation = subscribe(averageEstimation, (value) => $averageEstimation = value);
+  $$unsubscribe_highestEstimation = subscribe(highestEstimation, (value) => $highestEstimation = value);
+  $$result.css.add(css$6);
+  $$unsubscribe_recommendedEstimation();
+  $$unsubscribe_averageEstimation();
+  $$unsubscribe_highestEstimation();
+  return `<div class="${"container svelte-162e10g"}"><div class="${"recommended svelte-162e10g"}"><span class="${"label svelte-162e10g"}">Recommended</span>
+        <span class="${"value svelte-162e10g"}">${escape($recommendedEstimation)}</span></div>
+	<div class="${"stat svelte-162e10g"}"><span class="${"label svelte-162e10g"}">Average</span>
+        <span>${escape($averageEstimation)}</span></div>
+    <div class="${"stat svelte-162e10g"}"><span class="${"label svelte-162e10g"}">High</span>
+        <span>${escape($highestEstimation)}</span></div>
+</div>`;
 });
-var layout = /* @__PURE__ */ Object.freeze({
+var css$5 = {
+  code: "header.svelte-1104u2e{height:var(--header-height);width:100vw;background-color:var(--color-background-2);position:fixed;top:0;padding:var(--unit);box-sizing:border-box}.headerContainer.svelte-1104u2e{max-width:600px;margin:0 auto;display:flex;place-items:center;justify-content:space-between;background-color:#fefefe;padding:var(--unit);border-radius:calc(var(--unit) /2);box-shadow:0px 4.5px 2.7px rgba(0, 0, 0, 0.1), 0px 12.5px 7.5px rgba(0, 0, 0, 0.065),\n			0px 30.1px 18.1px rgba(0, 0, 0, 0.05), 0px 100px 60px rgba(0, 0, 0, 0.035)}h1.svelte-1104u2e{color:var(--color-white-dim);margin:0;width:165px;overflow:hidden;font-size:var(--font-size-large)}a.svelte-1104u2e{text-decoration:none;overflow:hidden}@media(max-width: 375px){h1.svelte-1104u2e{font-size:var(--font-size)}}",
+  map: null
+};
+var Header = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  $$result.css.add(css$5);
+  return `<header class="${"svelte-1104u2e"}"><div class="${"headerContainer svelte-1104u2e"}"><a href="${"/"}" alt="${"home"}" class="${"svelte-1104u2e"}"><h1 class="${"svelte-1104u2e"}">Fibonacci Estimator</h1></a>
+		${validate_component(TotalEstimation, "TotalEstimation").$$render($$result, {}, {}, {})}</div>
+</header>`;
+});
+var css$4 = {
+  code: ":root{--unit:16px;--color-white:#fefefe;--color-white-dim:#555;--color-black-dim:rgba(33, 33, 33, 0.5);--color-background-1:#dedede;--color-background-2:#b7bdc8;--color-divider:#cccccc;--color-dark:#5d6986;--font-size:18px;--font-size-large:24px;--header-height:100px;--footer-height:100px;--max-width:600px}{box-sizing:border-box}body{background-color:var(--color-background-2);font-family:Arial, Helvetica, sans-serif;padding:0;margin:0}.container.svelte-1yessix{height:100vh;width:100vw;overflow:hidden}main.svelte-1yessix{margin-top:calc(var(--header-height) + (var(--unit) * 2));height:calc(100vh - var(--header-height));overflow-y:scroll;box-sizing:border-box;padding:0 var(--unit)}",
+  map: null
+};
+var _layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  $$result.css.add(css$4);
+  return `<div class="${"container svelte-1yessix"}">${validate_component(Header, "Header").$$render($$result, {}, {}, {})}
+    <main class="${"svelte-1yessix"}">${slots.default ? slots.default({}) : ``}
+        </main>
+</div>`;
+});
+var __layout = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   [Symbol.toStringTag]: "Module",
-  "default": Layout
+  "default": _layout
 });
 function load({ error: error2, status }) {
   return { props: { error: error2, status } };
@@ -6216,22 +6396,182 @@ var error = /* @__PURE__ */ Object.freeze({
   "default": Error$1,
   load
 });
-var css = {
-  code: "h1.svelte-15nf6ib{color:skyblue}",
+function is_date(obj) {
+  return Object.prototype.toString.call(obj) === "[object Date]";
+}
+function get_interpolator(a, b) {
+  if (a === b || a !== a)
+    return () => a;
+  const type = typeof a;
+  if (type !== typeof b || Array.isArray(a) !== Array.isArray(b)) {
+    throw new Error("Cannot interpolate values of different type");
+  }
+  if (Array.isArray(a)) {
+    const arr = b.map((bi, i) => {
+      return get_interpolator(a[i], bi);
+    });
+    return (t) => arr.map((fn) => fn(t));
+  }
+  if (type === "object") {
+    if (!a || !b)
+      throw new Error("Object cannot be null");
+    if (is_date(a) && is_date(b)) {
+      a = a.getTime();
+      b = b.getTime();
+      const delta = b - a;
+      return (t) => new Date(a + t * delta);
+    }
+    const keys = Object.keys(b);
+    const interpolators = {};
+    keys.forEach((key) => {
+      interpolators[key] = get_interpolator(a[key], b[key]);
+    });
+    return (t) => {
+      const result = {};
+      keys.forEach((key) => {
+        result[key] = interpolators[key](t);
+      });
+      return result;
+    };
+  }
+  if (type === "number") {
+    const delta = b - a;
+    return (t) => a + t * delta;
+  }
+  throw new Error(`Cannot interpolate ${type} values`);
+}
+function tweened(value, defaults = {}) {
+  const store = writable(value);
+  let task;
+  let target_value = value;
+  function set(new_value, opts) {
+    if (value == null) {
+      store.set(value = new_value);
+      return Promise.resolve();
+    }
+    target_value = new_value;
+    let previous_task = task;
+    let started = false;
+    let { delay = 0, duration = 400, easing = identity, interpolate = get_interpolator } = assign(assign({}, defaults), opts);
+    if (duration === 0) {
+      if (previous_task) {
+        previous_task.abort();
+        previous_task = null;
+      }
+      store.set(value = target_value);
+      return Promise.resolve();
+    }
+    const start = now() + delay;
+    let fn;
+    task = loop((now2) => {
+      if (now2 < start)
+        return true;
+      if (!started) {
+        fn = interpolate(value, new_value);
+        if (typeof duration === "function")
+          duration = duration(value, new_value);
+        started = true;
+      }
+      if (previous_task) {
+        previous_task.abort();
+        previous_task = null;
+      }
+      const elapsed = now2 - start;
+      if (elapsed > duration) {
+        store.set(value = new_value);
+        return false;
+      }
+      store.set(value = fn(easing(elapsed / duration)));
+      return true;
+    });
+    return task.promise;
+  }
+  return {
+    set,
+    update: (fn, opts) => set(fn(target_value, value), opts),
+    subscribe: store.subscribe
+  };
+}
+var css$3 = {
+  code: ":root{--range-thumb-color:green;--range-thumb-height:40px;--range-thumb-border:#5d6986;--range-track-color:#5d6986;--range-track-radius:var(--unit)}.rangeContainer.svelte-1fwjis6{grid-column:1 / -1;width:100%;box-sizing:border-box;display:flex;place-items:center}input[type='range'].svelte-1fwjis6{width:100%;margin:-5.5px 0;background-color:transparent;-webkit-appearance:none}input[type='range'].svelte-1fwjis6:focus{outline:none}input[type='range'].svelte-1fwjis6::-webkit-slider-runnable-track{background:var(--range-track-color);border:0.2px solid var(--range-track-color);border-radius:var(--unit);width:100%;height:14px;cursor:pointer}input[type='range'].svelte-1fwjis6::-webkit-slider-thumb{margin-top:-12px;width:20px;height:var(--range-thumb-height);background-color:var(--range-thumb-color, red);border:1.8px solid var(--range-thumb-border);border-radius:var(--range-track-radius);cursor:pointer;-webkit-appearance:none}input[type='range'].svelte-1fwjis6:focus::-webkit-slider-runnable-track{background:var(--range-track-color)}input[type='range'].svelte-1fwjis6::-moz-range-track{background:var(--range-track-color);border:0.2px solid var(--range-track-color);border-radius:var(--range-track-radius);width:100%;height:14px;cursor:pointer}input[type='range'].svelte-1fwjis6::-moz-range-thumb{width:20px;height:var(--range-thumb-height);background-color:var(--range-thumb-color, red);border:1.8px solid var(--range-thumb-border);border-radius:15px;cursor:pointer}input[type='range'].svelte-1fwjis6::-ms-track{background:transparent;border-color:transparent;border-width:0 0;color:transparent;width:100%;height:14px;cursor:pointer}input[type='range'].svelte-1fwjis6::-ms-fill-lower{background:var(--range-track-color);border:0.2px solid var(--range-track-color);border-radius:2.6px}input[type='range'].svelte-1fwjis6::-ms-fill-upper{background:var(--range-track-color);border:0.2px solid var(--range-track-color);border-radius:2.6px}input[type='range'].svelte-1fwjis6::-ms-thumb{width:20px;height:var(--range-thumb-height);background:var(--range-thumb-color, red);border:1.8px solid var(--range-thumb-border);border-radius:15px;cursor:pointer;margin-top:0px}input[type='range'].svelte-1fwjis6:focus::-ms-fill-lower{background:var(--range-thumb-color, red)}input[type='range'].svelte-1fwjis6:focus::-ms-fill-upper{background:var(--range-track-color)}@supports (-ms-ime-align: auto){input[type='range'].svelte-1fwjis6{margin:0}}",
+  map: null
+};
+var RangeContainer = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { value } = $$props;
+  if ($$props.value === void 0 && $$bindings.value && value !== void 0)
+    $$bindings.value(value);
+  $$result.css.add(css$3);
+  return `<div class="${"rangeContainer svelte-1fwjis6"}"><input type="${"range"}" min="${"0"}" max="${"7"}" class="${"svelte-1fwjis6"}"${add_attribute("value", value, 0)}>
+</div>`;
+});
+var css$2 = {
+  code: "article.svelte-1z05x63{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 2fr 1fr;height:200px;padding-bottom:calc(var(--unit) * 2);margin:var(--unit) 0}h1.svelte-1z05x63{text-transform:capitalize;margin:0;display:flex;place-items:center;text-transform:uppercase;font-size:var(--font-size);color:var(--color-dark)}.estimation.svelte-1z05x63{font-size:2em;text-align:right;padding-right:var(--unit);box-sizing:border-box;color:var(--color-dark)}.explanationContainer.svelte-1z05x63{grid-column:1 / -1;overflow:hidden;max-width:600px;margin-top:calc(var(--unit) / 2);width:100%}.explanation.svelte-1z05x63{font-size:0.8em;color:var(--color-dark)}",
+  map: null
+};
+var Card2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let texts;
+  let $tweenedEstimation, $$unsubscribe_tweenedEstimation;
+  let { title = "Please enter a title" } = $$props;
+  let value = 0;
+  const tweenedEstimation = tweened(value, { duration: 250 });
+  $$unsubscribe_tweenedEstimation = subscribe(tweenedEstimation, (value2) => $tweenedEstimation = value2);
+  const calculateColor = (value2) => {
+    const _value = fibRange[value2];
+    if (_value === 20)
+      return "#E97474";
+    if (_value >= 13)
+      return "#E97474";
+    if (_value >= 5)
+      return "#DFB583";
+    if (_value >= 3)
+      return "#34CFD9";
+    if (_value > -1)
+      return "#69C349";
+  };
+  if ($$props.title === void 0 && $$bindings.title && title !== void 0)
+    $$bindings.title(title);
+  $$result.css.add(css$2);
+  texts = explanations[title];
+  $$unsubscribe_tweenedEstimation();
+  return `<article class="${"svelte-1z05x63"}"><h1 class="${"svelte-1z05x63"}">${escape(title)}</h1>
+	<out class="${"estimation svelte-1z05x63"}">${escape(Number.parseFloat($tweenedEstimation).toPrecision(3))}</out>
+	<div style="display: contents; --range-thumb-color:${escape(calculateColor(value))};">${validate_component(RangeContainer, "RangeContainer").$$render($$result, { value }, {}, {})}</div>
+	<div class="${"explanationContainer svelte-1z05x63"}">${each(texts, (item, i) => `${i === value ? `<div class="${"explanation svelte-1z05x63"}">${escape(item)}</div>` : ``}`)}</div>
+</article>`;
+});
+var css$1 = {
+  code: "main.svelte-1nn5pn5{margin:0 auto calc(var(--unit) * 10);max-width:600px}",
   map: null
 };
 var Routes = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css);
-  return `<h1 class="${"svelte-15nf6ib"}">Fibonacci Estimator</h1>
-<a href="${"/about"}">About</a>`;
+  $$result.css.add(css$1);
+  return `<main class="${"svelte-1nn5pn5"}">${validate_component(Card2, "Card").$$render($$result, { title: TITLES.complexity }, {}, {})}
+    ${validate_component(Card2, "Card").$$render($$result, { title: TITLES.risks }, {}, {})}
+    ${validate_component(Card2, "Card").$$render($$result, { title: TITLES.uncertainty }, {}, {})}
+</main>`;
 });
 var index = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   [Symbol.toStringTag]: "Module",
   "default": Routes
 });
+var css = {
+  code: ".container.svelte-ww5hv0{padding:var(--unit);height:calc(100% - (var(--header-height) + var(--footer-height)))}",
+  map: null
+};
 var About = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<h1>What is the Fibonacci Estimator?</h1>`;
+  $$result.css.add(css);
+  return `<div class="${"container svelte-ww5hv0"}"><h1>What is the Fibonacci Estimator?</h1>
+    <p>This is a fun little project to help teams with their estimations. 
+        Use it if you feel it can be useful to you. 
+    </p>
+
+    <h1>What is a story point?</h1>
+    <p>Effectively a unit of work. Over time a team has a number of story points that it can deliver in one sprint. 
+        Avoid estimating with time! These are very likely to deliver inaccurate estimations without being able to get any kind of handle on team performance.
+    </p>
+
+</div>`;
 });
 var about = /* @__PURE__ */ Object.freeze({
   __proto__: null,
